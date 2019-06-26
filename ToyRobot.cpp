@@ -31,8 +31,8 @@ void ToyRobot::Place(void)
     try
     {
         //Place the robot in the specified x and y coordinates
-        currentPosition.x = stoi(inputString.substr(5,1));
-        currentPosition.y = stoi(inputString.substr(7,1));
+        currentPosition.x = stoi(inputString.substr(6,1));
+        currentPosition.y = stoi(inputString.substr(8,1));
     }
     catch (exception &e)
     {
@@ -41,19 +41,19 @@ void ToyRobot::Place(void)
     }
     
     //Set the orientation of the robot
-    if (inputString.substr(9,5) == "NORTH")
+    if (inputString.substr(10,5) == "NORTH" && inputString.length() == 15)
     {
         currentPosition.dir = position::NORTH;
     }
-    else if (inputString.substr(9,5) == "SOUTH")
+    else if (inputString.substr(10,5) == "SOUTH" && inputString.length() == 15)
     {
         currentPosition.dir = position::SOUTH;
     }
-    else if (inputString.substr(9,5) == "EAST")
+    else if (inputString.substr(10,4) == "EAST" && inputString.length() == 14)
     {
         currentPosition.dir = position::EAST;
     }
-    else if (inputString.substr(9,5) == "WEST")
+    else if (inputString.substr(10,4) == "WEST" && inputString.length() == 14)
     {
         currentPosition.dir = position::WEST;
     }
@@ -151,14 +151,6 @@ void ToyRobot::Report(void) const
     cout << endl;
 }
 
-//Get user input
-void ToyRobot::GetInput(void)
-{
-    getline(cin, inputString);
-    //Remove white spaces from the input string
-    inputString.erase(remove( inputString.begin(), inputString.end(), ' ' ), inputString.end());
-}
-
 //Run the Toy Robot Simulator
 void ToyRobot::RunToyRobot(void)
 {
@@ -169,7 +161,7 @@ void ToyRobot::RunToyRobot(void)
     //Check if the user input a valid PLACE command first
     do{
         //Get user input
-        myToyRobot.GetInput();
+        getline(cin, myToyRobot.inputString);
         
         if (myToyRobot.inputString.substr(0,5) == "PLACE")
         {
@@ -184,27 +176,27 @@ void ToyRobot::RunToyRobot(void)
     while(1)
     {
         //Get user input
-        myToyRobot.GetInput();
+        getline(cin, myToyRobot.inputString);
         
-        if (myToyRobot.inputString.substr(0,6) == "REPORT")
-        {
-            myToyRobot.Report();
-        }
-        else if (myToyRobot.inputString.substr(0,5) == "PLACE")
+        if (myToyRobot.inputString.substr(0,5) == "PLACE")
         {
             myToyRobot.Place();
         }
-        else if (myToyRobot.inputString.substr(0,5) == "RIGHT")
+        else if (myToyRobot.inputString.substr(0,6) == "REPORT" && myToyRobot.inputString.length() == 6)
+        {
+            myToyRobot.Report();
+        }
+        else if (myToyRobot.inputString.substr(0,5) == "RIGHT" && myToyRobot.inputString.length() == 5)
         {
             myToyRobot.Right();
         }
-        else if (myToyRobot.inputString.substr(0,4) == "MOVE")
-        {
-            myToyRobot.Move();
-        }
-        else if (myToyRobot.inputString.substr(0,4) == "LEFT")
+        else if (myToyRobot.inputString.substr(0,4) == "LEFT" && myToyRobot.inputString.length() == 4)
         {
             myToyRobot.Left();
+        }
+        else if (myToyRobot.inputString.substr(0,4) == "MOVE" && myToyRobot.inputString.length() == 4)
+        {
+            myToyRobot.Move();
         }
     }
 }

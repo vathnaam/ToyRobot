@@ -36,7 +36,6 @@ private:
     void Left(void);
     void Right(void);
     void Report(void) const;
-    void GetInput(void);
     ToyRobot(void){}; //Default constructor is defined private to avoid creating an object. User should not create an object for this class.
     
 public:
