@@ -28,6 +28,7 @@ private:
         enum direction {NORTH,SOUTH,EAST,WEST} dir;
     } currentPosition;
     string inputString;
+    int maxTableDimension = 4;
     
     //Private function members
     bool IsValid(void) const;

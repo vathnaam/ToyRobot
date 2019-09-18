@@ -12,7 +12,7 @@
 bool ToyRobot::IsValid(void) const
 {
     //The robot can only move on a 5x5 square tabletop
-    if ((currentPosition.x <= 4) && (currentPosition.x >= 0) && (currentPosition.y <= 4) && (currentPosition.y >= 0))
+    if ((currentPosition.x <= maxTableDimension) && (currentPosition.x >= 0) && (currentPosition.y <= maxTableDimension) && (currentPosition.y >= 0))
     {
         return true;
     }
@@ -27,12 +27,16 @@ void ToyRobot::Place(void)
 {
     bool invalid = false; //Invalid input indicator
     position oldPosition = currentPosition; //Temporary old position
+    unsigned long xIdx = inputString.find(" ")+1;
+    unsigned long yIdx = inputString.find(",")+1;
+    unsigned long dirIdx = inputString.find(",",yIdx)+1;
+    string direction = inputString.substr(dirIdx,inputString.length()-dirIdx);
     
     try
     {
         //Place the robot in the specified x and y coordinates
-        currentPosition.x = stoi(inputString.substr(6,1));
-        currentPosition.y = stoi(inputString.substr(8,1));
+        currentPosition.x = stoi(inputString.substr(xIdx,(yIdx-xIdx)-1));
+        currentPosition.y = stoi(inputString.substr(yIdx,(dirIdx-yIdx)-1));
     }
     catch (exception &e)
     {
@@ -41,19 +45,19 @@ void ToyRobot::Place(void)
     }
     
     //Set the orientation of the robot
-    if (inputString.substr(10,5) == "NORTH" && inputString.length() == 15)
+    if (direction == "NORTH")
     {
         currentPosition.dir = position::NORTH;
     }
-    else if (inputString.substr(10,5) == "SOUTH" && inputString.length() == 15)
+    else if (direction == "SOUTH")
     {
         currentPosition.dir = position::SOUTH;
     }
-    else if (inputString.substr(10,4) == "EAST" && inputString.length() == 14)
+    else if (direction == "EAST")
     {
         currentPosition.dir = position::EAST;
     }
-    else if (inputString.substr(10,4) == "WEST" && inputString.length() == 14)
+    else if (direction == "WEST")
     {
         currentPosition.dir = position::WEST;
     }
@@ -182,19 +186,19 @@ void ToyRobot::RunToyRobot(void)
         {
             myToyRobot.Place();
         }
-        else if (myToyRobot.inputString.substr(0,6) == "REPORT" && myToyRobot.inputString.length() == 6)
+        else if (myToyRobot.inputString == "REPORT")
         {
             myToyRobot.Report();
         }
-        else if (myToyRobot.inputString.substr(0,5) == "RIGHT" && myToyRobot.inputString.length() == 5)
+        else if (myToyRobot.inputString == "RIGHT")
         {
             myToyRobot.Right();
         }
-        else if (myToyRobot.inputString.substr(0,4) == "LEFT" && myToyRobot.inputString.length() == 4)
+        else if (myToyRobot.inputString == "LEFT")
         {
             myToyRobot.Left();
         }
-        else if (myToyRobot.inputString.substr(0,4) == "MOVE" && myToyRobot.inputString.length() == 4)
+        else if (myToyRobot.inputString == "MOVE")
         {
             myToyRobot.Move();
         }
